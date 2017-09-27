@@ -1,0 +1,62 @@
+---
+title: "biz-record-linkage"
+author: "brockwebb45@gmail.com"
+date: "9/26/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Synopsis
+Generate a master set of businesses and two linkage sets (training/testing) that contain errors. The idea is that one will have to match the linkage file to the master record and correct/clean the data.
+
+## Libraries
+
+```{r}
+#library()
+```
+
+## Data
+FakeNameGenerator.com is good for addresses, not company names (too many duplicates). Could not find a sufficient "business name generator" to get things in bulk quantities... so we'll make our own with a few word lists...
+
+```{r}
+#Master list from FakeNameGenerator for addresses 
+# A lot of duplicate company names to fix
+masterF <- read.csv("./data/FakeNameGenerator.com_5467495b.csv",header=TRUE)
+
+#Generate random company names
+wlAnimals <- read.csv("./data/animals.csv")
+wlBiztype <- read.csv("./data/biztypes.csv")
+wlColors <- read.csv("./data/colors.csv")
+wlFiction <- as.data.frame(read.csv("./data/fromfiction.csv", header=FALSE), stringsAsFactors=FALSE )
+wlMath <- read.csv("./data/mathwords.csv")
+wlScience <- read.csv("./data/sciencewords.csv")
+
+#Using fiction list because, why not? Its nerd-tastic
+#cnames <- as.data.frame(masterF$Name, stringsAsFactors=FALSE)
+
+
+ cnames <- wlFiction
+
+
+ 
+ 
+ 
+```
+
+
+
+
+
+## Credits / References
+fictional companies names: 
+1) http://www.fakenamegenerator.com/order.php
+2) https://myvocabulary.com/word-list/science-vocabulary/
+3) http://www.english-for-students.com/Science-Words.html
+4) https://github.com/hzlzh/Domain-Name-List/blob/master/Animal-words.txt
+5) https://www.ncl.ucar.edu/Applications/Scripts/rgb.txt
+6) http://brendoman.com/media/users/dan/finctional_companies.txt
+
+
