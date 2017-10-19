@@ -30,19 +30,56 @@ masterF <- read.csv("./data/FakeNameGenerator.com_5467495b.csv",header=TRUE)
 wlAnimals <- read.csv("./data/animals.csv")
 wlBiztype <- read.csv("./data/biztypes.csv")
 wlColors <- read.csv("./data/colors.csv")
-wlFiction <- as.data.frame(read.csv("./data/fromfiction.csv", header=FALSE), stringsAsFactors=FALSE )
 wlMath <- read.csv("./data/mathwords.csv")
 wlScience <- read.csv("./data/sciencewords.csv")
+```
 
-#Using fiction list because, why not? Its nerd-tastic
-#cnames <- as.data.frame(masterF$Name, stringsAsFactors=FALSE)
+```{r}
 
+#Multiple picklists to randomly sample from 
+#wlistpick <- data.frame(matrix(ncol=1, nrow = 4))
+wlistpick <- data.frame(dfn=c("wlAnimals","wlColors","wlMath","wlScience"),stringsAsFactors = FALSE)
 
- cnames <- wlFiction
+#extra rows and remove duplicates, need a 50k sample
+tnames <- data.frame(matrix(ncol=1,nrow=100000))
 
-
+for(i in 1:nrow(tnames)){
+  
+  # Number of words in business name
+  roll <- sample(c(1,2,3),1)
+  
+  tn1<-NULL 
+  
+  for(j in 1:roll-1){
  
+    x<-sample(c(1,2,3,4),1)
+    
+    if(x==1){
+      tn <- as.character(sample(wlAnimals[[1]],1))
+    }else if(x==2){
+      tn <- as.character(sample(wlColors[[1]],1))
+    }else if(x==3){
+      tn <- as.character(sample(wlMath[[1]],1))
+    }else{
+      tn <- as.character(sample(wlScience[[1]],1))
+    }
+    tn1 <- paste(tn," ",tn1)    
+  } 
+    tn <- as.character(sample(wlBiztype[[1]],1))
+    tn1 <- trimws(tn1,"r")
+    tn1 <- paste(tn1,", ",tn,sep="")
+    tnames[i,]<-tn1
+  }
  
+cnames <- unique(tnames)
+    
+tcnames <- as.data.frame(sample(cnames[,1],50000,replace=FALSE))
+colnames(tcnames)<-c("Name")
+
+
+masterF$Name <- tcnames$Name
+
+write.csv(masterF,file="./data/masterCompanyFile.csv",row.names = FALSE)
  
 ```
 
@@ -57,6 +94,6 @@ fictional companies names:
 3) http://www.english-for-students.com/Science-Words.html
 4) https://github.com/hzlzh/Domain-Name-List/blob/master/Animal-words.txt
 5) https://www.ncl.ucar.edu/Applications/Scripts/rgb.txt
-6) http://brendoman.com/media/users/dan/finctional_companies.txt
+
 
 
