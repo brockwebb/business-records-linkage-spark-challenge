@@ -83,8 +83,106 @@ write.csv(masterF,file="./data/masterCompanyFile.csv",row.names = FALSE)
  
 ```
 
+# Adding errors to a copy of the master file, which will later be used for the training/test set
+
+x <- c("this, is nice.", "nice, this is.")
+gr <- gregexpr("[., ]", x)
+regmatches(x,gr) <- lapply(lengths(gr), sample, x=c('|',':','@','*'))
+x
+```{r}
+errorF <-masterF
+
+#Drop the unique ID
+errorF$BusinessGUID <- NULL
+
+set.seed(123456)
+for(i in 1:50000){ 
+
+  for(j in 1:6){
+  
+    roll=sample(1:10000,1)
+    
+    if(roll>9300){
+      errorF[i,j]<-"NA"
+    }
+  
+  } #column lool  
+} #Row loop 
+
+write.csv(errorF,file="./data/errorF-NA.csv",row.names = FALSE)  
+  
+```
 
 
+
+# Create the test and training sets
+```{r}
+errorF <- read.csv("./data/errorF-NA.csv", header = TRUE)
+
+set.seed(10192017)
+index <- sample(1:nrow(errorF),30000,replace=FALSE)
+trainF <- errorF[index,] 
+tF <- errorF[-index,]
+index <- sample(1:nrow(tF),10000,replace=FALSE)
+testF <- tF[index,]
+
+write.csv(trainF,file="./trainingFile.csv",row.names = FALSE)
+write.csv(testF,file="./testFile.csv",row.names = FALSE)
+```
+
+# Get working later
+
+```{r}
+ 
+#Function to substitute random typos, not working yet.
+  for(m in 1:nchar(errorF[i,j])) 
+      roll = sample(1:10000,1)
+    
+      if(l=="a"){x=c('q', 'w', 'z', 'x','')
+      }else if(l=='b'){x=c('v', 'f', 'g', 'h', 'n','') 
+      }else if(l=='c'){x=c('x', 's', 'd', 'f', 'v',''  )
+      }else if(l=='d'){x=c('x', 's', 'w', 'e', 'r', 'f', 'v', 'c',''  )
+      }else if(l=='e'){x=c('w', 's', 'd', 'f', 'r','' )
+      }else if(l=='f'){x=c('c', 'd', 'e', 'r', 't', 'g', 'b', 'v','' )
+      }else if(l=='g'){x=c('r', 'f', 'v', 't', 'b', 'y', 'h', 'n',''  )
+      }else if(l=='h'){x=c( 'b', 'g', 't', 'y', 'u', 'j', 'm', 'n','' )
+      }else if(l=='i'){x=c( 'u', 'j', 'k', 'l', 'o','' )
+      }else if(l=='j'){x=c( 'n', 'h', 'y', 'u', 'i', 'k', 'm','' )
+      }else if(l=='k'){x=c( 'u', 'j', 'm', 'l', 'o','' )
+      }else if(l=='l'){x=c('p', 'o', 'i', 'k', 'm',''  )
+      }else if(l=='m'){x=c( 'n', 'h', 'j', 'k', 'l','' )
+      }else if(l=='n'){x=c('b', 'g', 'h', 'j', 'm',''  )
+      }else if(l=='o'){x=c('i', 'k', 'l', 'p','' )
+      }else if(l=='p'){x=c('o', 'l',''  )
+      }else if(l=='q'){x=c('a','s','w','2','1','')
+      }else if(l=='r'){x=c('e', 'd', 'f', 'g', 't',''  )
+      }else if(l=='s'){x=c('q', 'w', 'e', 'z', 'x', 'c','' )    
+      }else if(l=='t'){x=c('r', 'f', 'g', 'h', 'y','' ) 
+      }else if(l=='u'){x=c('y', 'h', 'j', 'k', 'i','' ) 
+      }else if(l=='v'){x=c('c', 'd', 'f', 'g', 'b','') 
+      }else if(l=='w'){x=c('q', 'a', 's', 'd', 'e','' ) 
+      }else if(l=='x'){x=c('z', 'a', 's', 'd', 'c','' ) 
+      }else if(l=='y'){x=c('t', 'g', 'h', 'j', 'u','' ) 
+      }else if(l=='z'){x=c('x', 's', 'a','' ) 
+      }else if(l=='1'){x=c( '0','2','4','5') 
+      }else if(l=='2'){x=c( '0','1','3','4','5','6') 
+      }else if(l=='3'){x=c('2','4','5','6' ) 
+      }else if(l=='4'){x=c('1','2','5','7','8' ) 
+      }else if(l=='5'){x=c('1','2','3','4','6','7','8','9' ) 
+      }else if(l=='6'){x=c('2','3','5','7','8','9' ) 
+      }else if(l=='7'){x=c('4','5','6','8' ) 
+      }else if(l=='8'){x=c('4','5','6','7','9' ) 
+      }else if(l=='9'){x=c('0','5','6','8' ) 
+      }else if(l=='0'){x=c( '1','2','9') 
+      }else{}
+
+    }#cell loop  
+
+```
+
+
+
+write.csv(masterF,file="./data/masterCompanyFile.csv",row.names = FALSE)
 
 
 ## Credits / References
